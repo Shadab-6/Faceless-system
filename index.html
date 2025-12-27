@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>$300/Month Faceless System</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
@@ -13,13 +14,6 @@ body {
     font-family: 'Inter', sans-serif;
     background: #FDFBF7;
     color: #1F2937;
-}
-
-.buy-btn {
-    transition: 0.3s ease;
-}
-.buy-btn:hover {
-    transform: scale(1.05);
 }
 
 .cart-notify {
@@ -43,43 +37,41 @@ body {
     <span class="bg-green-500 rounded-full px-2 py-1 text-xs">✓</span>
     <div>
         <p class="font-bold text-sm">Added to cart</p>
-        <p class="text-xs text-gray-400">Your product is ready</p>
+        <p class="text-xs text-gray-400">Ready to checkout</p>
     </div>
 </div>
 
-<!-- NAV -->
+<!-- NAVBAR -->
 <nav class="sticky top-0 bg-white/90 backdrop-blur border-b z-50">
 <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
     <div class="font-bold text-xl">$<span class="text-green-600">Faceless</span></div>
-    <div class="flex items-center gap-5">
-        <div onclick="scrollToSection('purchase')" class="relative cursor-pointer">
-            🛒
-            <span id="cartCount" class="absolute -top-2 -right-2 bg-green-600 text-white text-xs px-1.5 rounded-full">0</span>
-        </div>
-        <button onclick="scrollToSection('purchase')" class="bg-gray-900 text-white px-4 py-2 rounded-lg text-sm">
-            Get Access
-        </button>
+
+    <div onclick="openCart()" class="relative cursor-pointer">
+        🛒
+        <span id="cartCount" class="absolute -top-2 -right-2 bg-green-600 text-white text-xs px-1.5 rounded-full">0</span>
     </div>
 </div>
 </nav>
 
 <!-- HERO -->
-<section class="py-14 px-4">
+<section class="py-16 px-4">
 <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center">
 
 <div>
-    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold">Instant Access</span>
+    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold">
+        Instant Digital Access
+    </span>
 
     <h1 class="text-4xl md:text-5xl font-extrabold mt-4">
         Build a <span class="text-green-600">$300/Month</span><br> Faceless Income
     </h1>
 
     <p class="text-gray-600 mt-4">
-        Simple system. No camera. No ads. Just repeatable income using digital assets.
+        No camera. No ads. No experience. Just a simple digital system that works.
     </p>
 
-    <div class="mt-6 flex flex-wrap gap-4">
-        <button onclick="addToCart()" class="buy-btn bg-green-600 text-white px-7 py-4 rounded-xl font-bold">
+    <div class="mt-6 flex gap-4">
+        <button onclick="addToCart()" class="bg-green-600 text-white px-7 py-4 rounded-xl font-bold hover:scale-105 transition">
             Add to Cart — $5
         </button>
 
@@ -91,8 +83,8 @@ body {
 
 <div class="bg-white p-8 rounded-xl shadow-lg border text-center">
     <h3 class="text-xl font-bold mb-2">$5 Blueprint</h3>
-    <p class="text-sm text-gray-500 mb-4">Earn consistently without showing your face.</p>
-    <div class="text-4xl font-black text-green-600">$300/mo</div>
+    <p class="text-sm text-gray-500 mb-4">Faceless digital income system</p>
+    <div class="text-4xl font-black text-green-600">$300 / month</div>
 </div>
 
 </div>
@@ -127,45 +119,66 @@ body {
 </div>
 </section>
 
-<!-- PURCHASE -->
-<section id="purchase" class="py-20 bg-[#FDFBF7]">
-<div class="max-w-3xl mx-auto text-center">
-<h2 class="text-3xl font-bold mb-4">Get Instant Access</h2>
+<!-- CART MODAL -->
+<div id="cartModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden z-50 flex items-center justify-center">
+<div class="bg-white rounded-2xl w-[90%] max-w-md p-6 relative">
 
-<button onclick="simulateCheckout(event)" class="buy-btn bg-green-600 text-white px-10 py-4 rounded-xl text-lg font-bold">
-Buy Now — $5
+<button onclick="closeCart()" class="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
+
+<h2 class="text-2xl font-bold mb-4 text-center">Your Cart</h2>
+
+<div class="border rounded-lg p-4 flex justify-between items-center mb-4">
+    <div>
+        <p class="font-semibold">Faceless Income Blueprint</p>
+        <p class="text-xs text-gray-500">Instant digital access</p>
+    </div>
+    <p class="font-bold">$5</p>
+</div>
+
+<div class="flex justify-between text-sm mb-3">
+    <span>Total</span>
+    <span class="font-bold">$5</span>
+</div>
+
+<button onclick="checkout()" class="w-full bg-green-600 text-white py-3 rounded-xl font-bold hover:bg-green-700 transition">
+    Pay Now
 </button>
 
-<p class="text-xs text-gray-400 mt-3">Instant digital delivery</p>
+<p class="text-center text-xs text-gray-400 mt-3">
+    Secure checkout • Instant access
+</p>
+
 </div>
-</section>
+</div>
 
 <script>
 let cartCount = 0;
 let chart;
 
 function addToCart() {
-    cartCount++;
+    cartCount = 1;
     document.getElementById("cartCount").innerText = cartCount;
 
     const notify = document.getElementById("cartNotification");
     notify.classList.add("show");
-    setTimeout(() => notify.classList.remove("show"), 2500);
+    setTimeout(() => notify.classList.remove("show"), 2000);
 }
 
-function simulateCheckout(event) {
-    const btn = event.target;
-    btn.disabled = true;
-    btn.innerText = "Processing...";
+function openCart() {
+    if (cartCount === 0) {
+        alert("Your cart is empty.");
+        return;
+    }
+    document.getElementById("cartModal").classList.remove("hidden");
+}
 
-    setTimeout(() => {
-        btn.innerText = "Success!";
-        setTimeout(() => {
-            alert("Purchase successful! (Demo)");
-            btn.innerText = "Buy Now — $5";
-            btn.disabled = false;
-        }, 1200);
-    }, 1500);
+function closeCart() {
+    document.getElementById("cartModal").classList.add("hidden");
+}
+
+function checkout() {
+    alert("Payment successful! (Demo)");
+    closeCart();
 }
 
 function scrollToSection(id) {
