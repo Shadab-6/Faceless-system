@@ -71,13 +71,18 @@ body {
     </p>
 
     <div class="mt-6 flex gap-4">
-        <button onclick="addToCart()" class="bg-green-600 text-white px-7 py-4 rounded-xl font-bold hover:scale-105 transition">
-            Add to Cart — $5
-        </button>
+        <button onclick="addToCart()" class="bg-green-600 text-white px-7 py-4 rounded-xl font-bold">
+    Add to Cart — $5
+</button>
 
         <button onclick="scrollToSection('simulator')" class="border px-7 py-4 rounded-xl font-bold">
-            View Earnings
-        </button>
+    View Earnings
+</button>
+        
+<button onclick="scrollToSection('simulator')" class="border px-7 py-4 rounded-xl font-bold">
+    View Earnings
+</button>
+
     </div>
 </div>
 
@@ -180,7 +185,51 @@ body {
 </div>
 
 <script>
+let cartCount = 0;
 let chart;
+
+// ================= CART FUNCTIONS =================
+
+function addToCart() {
+    cartCount = 1;
+    document.getElementById("cartCount").innerText = cartCount;
+
+    // Show toast
+    const notify = document.getElementById("cartNotification");
+    notify.classList.add("show");
+
+    setTimeout(() => {
+        notify.classList.remove("show");
+    }, 2000);
+}
+
+function openCart() {
+    if (cartCount === 0) {
+        alert("Your cart is empty.");
+        return;
+    }
+    document.getElementById("cartModal").classList.remove("hidden");
+}
+
+function closeCart() {
+    document.getElementById("cartModal").classList.add("hidden");
+}
+
+function checkout() {
+    alert("Payment successful! (Demo mode)");
+    closeCart();
+}
+
+// ================= SCROLL FUNCTION =================
+
+function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+    }
+}
+
+// ================= INCOME CALCULATOR =================
 
 function initChart() {
     const ctx = document.getElementById("incomeChart").getContext("2d");
@@ -196,6 +245,7 @@ function initChart() {
             }]
         },
         options: {
+            responsive: true,
             plugins: {
                 legend: { display: false }
             },
@@ -213,21 +263,22 @@ function initChart() {
 }
 
 function updateCalculator() {
-    const price = parseInt(document.getElementById("priceInput").value);
-    const sales = parseInt(document.getElementById("salesInput").value);
-
-    document.getElementById("priceDisplay").innerText = `$${price}`;
-    document.getElementById("salesDisplay").innerText = sales;
+    const price = Number(document.getElementById("priceInput").value);
+    const sales = Number(document.getElementById("salesInput").value);
 
     const daily = price * sales;
     const weekly = daily * 7;
     const monthly = daily * 30;
 
+    document.getElementById("priceDisplay").innerText = `$${price}`;
+    document.getElementById("salesDisplay").innerText = sales;
     document.getElementById("monthlyResult").innerText = `$${monthly}`;
 
     chart.data.datasets[0].data = [daily, weekly, monthly];
     chart.update();
 }
+
+// ================= INIT =================
 
 document.addEventListener("DOMContentLoaded", () => {
     initChart();
@@ -237,6 +288,8 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 
 
+
 </body>
 </html>
+
 
